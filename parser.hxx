@@ -21,14 +21,11 @@
 
 #define FUSION_MAX_VECTOR_SIZE 20
 
-#include "types.hxx"
+#include "passwd_utils.hxx"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
-
-#include <boost/spirit/include/phoenix.hpp>
-
 #include <boost/spirit/repository/include/qi_flush_multi_pass.hpp>
 
 #include <vector>
@@ -52,7 +49,6 @@ BOOST_FUSION_ADAPT_STRUCT(
 
 namespace mrr
 {
-
   namespace qi = boost::spirit::qi;
 
   template <typename Iter>
@@ -96,7 +92,6 @@ namespace mrr
 
       start_state = records;
 
-#if 0
 #define SRN(s)    s.name(#s); debug(s);
       SRN(string_field)
       SRN(record)
@@ -104,7 +99,6 @@ namespace mrr
       SRN(records)
       SRN(start_state)
 #undef SRN
-#endif
     }
 
     qi::rule<Iter, std::string()> string_field, end_of_record;
@@ -114,23 +108,11 @@ namespace mrr
   };
 
   template <typename Iter>
-  bool parse_etc_pass(
-    Iter& first,
-    Iter& last,
-    //etc_pass_info& info
-    START_STATE_RULE_RETTYPE& info
-  )
+  inline bool parse_etc_pass(Iter& first, Iter& last, 
+    START_STATE_RULE_RETTYPE& info)
   {
     parser<Iter> p;
-
-    bool result = qi::parse(
-      first,
-      last,
-      p,
-      info
-    );
-
-    return result;
+    return qi::parse(first, last, p, info);
   }
 
 } // namespace mrr

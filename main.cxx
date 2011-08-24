@@ -3,35 +3,13 @@
 #include <sstream>
 #include <iomanip>
 
-#include "types.hxx"
-#include "parser.hxx"
-
-#define USE_INPUT_STREAM_ITER
-
-#include <boost/spirit/include/support_multi_pass.hpp>
-#include <boost/spirit/include/support_istream_iterator.hpp>
-#include <boost/spirit/include/classic_position_iterator.hpp>
-
-typedef
-  std::istreambuf_iterator<char>
-  base_iter_type
-;
-
-typedef
-  boost::spirit::multi_pass<base_iter_type>
-  mp_iter_type
-;
-
-typedef
-  boost::spirit::classic::position_iterator2<mp_iter_type>
-  parse_iter_type
-;
+#include "passwd_utils.hxx"
 
 void displayInfo(mrr::etc_pass_info const& epi);
 void displayInfoAsXML(mrr::etc_pass_info const& epi);
 
-
 //===========================================================================
+
 int main()
 {
   using namespace mrr;
@@ -39,49 +17,20 @@ int main()
   std::string input;
   std::string temp;
 
-  std::cin.setf(std::ios_base::skipws);
+  //std::cin.setf(std::ios_base::skipws);
 
-  // Create multipass iterators so the transient stream will be
-  // buffered...
-  mp_iter_type mp_beg = boost::spirit::make_default_multi_pass(
-    base_iter_type(std::cin)
-  );
-  mp_iter_type mp_end = boost::spirit::make_default_multi_pass(
-    base_iter_type()
-  );
-
-  // Create iterators that tracks the line and column position and
-  // also buffers the last line read in...
-  parse_iter_type begin(mp_beg, mp_end);
-  begin.set_tab_chars(8);
-
-  parse_iter_type end;
-
-  //etc_pass_info info;
-  START_STATE_RULE_RETTYPE info;
-  bool result = parse_etc_pass(begin, end, info);
+  etc_pass_info info;
+  bool result = passwd_from_stream("test.txt", info);
 
   if (result)
-  {
     displayInfoAsXML(info);
-  }
   else
   {
-    boost::spirit::classic::file_position_base<std::string> const& pos
-    = begin.get_position();
-
-    std::ostringstream buf;
-    buf
-    << "Parse error @ line "<< pos.line << " column " << pos.column
-    << std::endl
-    << '\'' << begin.get_currentline() << '\''
-    ;
-
-    if (!begin.get_currentline().empty())
-      buf << std::endl << std::setw(pos.column) << "" << "^here";
-
-    std::cout << buf.str() << std::endl;
+    std::cerr << "PARSE ERROR!" << std::endl;
+    return 1;
   }
+
+  return 0;
 }
 
 //===========================================================================
