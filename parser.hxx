@@ -54,7 +54,6 @@ namespace mrr
 {
 
   namespace qi = boost::spirit::qi;
-//  namespace ascii = boost::spirit::ascii;
 
   template <typename Iter>
   struct parser : qi::grammar<Iter, START_STATE_RULE_RETTYPE() >
@@ -67,10 +66,6 @@ namespace mrr
       using qi::eoi;
       using qi::omit;
       using boost::spirit::repository::flush_multi_pass;
-//      using qi::lexeme;
-//      using qi::lit;
-//      using qi::eol;
-//      using ascii::alnum;
 
       string_field %=
         +(char_ -(lit(':') | lit('\n') | lit("\r\n")))

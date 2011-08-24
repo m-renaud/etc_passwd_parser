@@ -8,7 +8,6 @@
 
 #define USE_INPUT_STREAM_ITER
 
-#ifdef USE_INPUT_STREAM_ITER
 #include <boost/spirit/include/support_multi_pass.hpp>
 #include <boost/spirit/include/support_istream_iterator.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
@@ -27,7 +26,6 @@ typedef
   boost::spirit::classic::position_iterator2<mp_iter_type>
   parse_iter_type
 ;
-#endif
 
 void displayInfo(mrr::etc_pass_info const& epi);
 void displayInfoAsXML(mrr::etc_pass_info const& epi);
@@ -41,12 +39,6 @@ int main()
   std::string input;
   std::string temp;
 
-#ifndef USE_INPUT_STREAM_ITER
-  while(std::getline(std::cin, temp))
-    input += temp + "\n";
-#endif
-
-#ifdef USE_INPUT_STREAM_ITER
   std::cin.setf(std::ios_base::skipws);
 
   // Create multipass iterators so the transient stream will be
@@ -64,16 +56,13 @@ int main()
   begin.set_tab_chars(8);
 
   parse_iter_type end;
-#endif
 
   //etc_pass_info info;
   START_STATE_RULE_RETTYPE info;
-#ifdef USE_INPUT_STREAM_ITER
   bool result = parse_etc_pass(begin, end, info);
 
   if (result)
   {
-//    std::cout << "Parsed fine." << std::endl;
     displayInfoAsXML(info);
   }
   else
@@ -93,16 +82,6 @@ int main()
 
     std::cout << buf.str() << std::endl;
   }
-#else
-  bool result = parse_etc_pass(input.begin(), input.end(), info);
-
-  if (result)
-    std::cout << "Parsed fine." << std::endl;
-  else
-    std::cout << "No parse." << std::endl;
-#endif
-
-
 }
 
 //===========================================================================
