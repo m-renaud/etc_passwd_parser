@@ -123,16 +123,16 @@ void displayInfo(mrr::etc_pass_info const& epi)
 //===========================================================================
 void displayInfoAsXML(mrr::etc_pass_info const& epi)
 {
-  std::cout << "<etc_pass>" << std::endl;
+  std::cout << "<etc_pass host=\"" << "\">" << std::endl;
   for(mrr::etc_pass_record const& epr : epi.records)
   {
     std::cout << "  <record>" << std::endl;
     std::cout << "    <username>" << epr.username << "</username>" << std::endl;
-    std::cout << "    <uid>"      << epr.uid     << "</uid>"       << std::endl;
-    std::cout << "    <gid>"      << epr.gid      << "</gid>"       << std::endl;
-    std::cout << "    <uid_info>" << epr.uid_info << "</uid_info>"  << std::endl;
-    std::cout << "    <home_dir>" << epr.home_dir << "</home_dir>"  << std::endl;
-    std::cout << "    <shell>"    << epr.shell    << "</shell>"     << std::endl;
+    std::cout << "    <uid>"      << epr.uid      << "</uid>"      << std::endl;
+    std::cout << "    <gid>"      << epr.gid      << "</gid>"      << std::endl;
+    std::cout << "    <uid_info>" << epr.uid_info << "</uid_info>" << std::endl;
+    std::cout << "    <home_dir>" << epr.home_dir << "</home_dir>" << std::endl;
+    std::cout << "    <shell>"    << epr.shell    << "</shell>"    << std::endl;
     std::cout << "  </record>" << std::endl;
   }
   std::cout << "</etc_pass>" << std::endl;
