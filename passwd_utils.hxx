@@ -7,9 +7,6 @@
 
 namespace mrr
 {
-  struct etc_pass_record;
-  struct etc_pass_info;
-
   struct etc_pass_record
   {
     std::string username;
@@ -35,16 +32,11 @@ namespace mrr
     std::istream& is,
     etc_pass_info& data
   );
-  
+
   bool passwd_from_container(
     std::string& str,
     etc_pass_info& data
   );
-
-#if 0
-  template <typename T, typename CharT>
-  bool passwd_parse(std::basic_istream<T,CharT>& is, etc_pass_info& data);
-#endif
 
 } // namespace mrr
 

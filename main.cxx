@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <iomanip>
+#include <unistd.h>
 
 #include "passwd_utils.hxx"
 
@@ -12,15 +13,15 @@ void displayInfoAsXML(mrr::etc_pass_info const& epi);
 
 int main()
 {
+  std::ios::sync_with_stdio(false);
+
   using namespace mrr;
 
   std::string input;
   std::string temp;
 
-  //std::cin.setf(std::ios_base::skipws);
-
   etc_pass_info info;
-  bool result = passwd_from_stream("test.txt", info);
+  bool result = passwd_from_stream("/etc/passwd", info);
 
   if (result)
     displayInfoAsXML(info);
@@ -38,8 +39,10 @@ void displayInfo(mrr::etc_pass_info const& epi)
 {
   for(mrr::etc_pass_record const& epr : epi.records)
   {
-    std::cout << "Username: " << epr.username << std::endl;
-    std::cout << "Password: " << epr.password << std::endl;
+    std::cout
+      << "Username: " << epr.username << '\n'
+      << "Password: " << epr.password << '\n'
+    ;
     std::cout << "UID     : " << epr.uid      << std::endl;
     std::cout << "GID     : " << epr.gid      << std::endl;
     std::cout << "Uid Info: " << epr.uid_info << std::endl;
@@ -51,18 +54,29 @@ void displayInfo(mrr::etc_pass_info const& epi)
 //===========================================================================
 void displayInfoAsXML(mrr::etc_pass_info const& epi)
 {
-  std::cout << "<etc_pass host=\"" << "\">" << std::endl;
-  for(mrr::etc_pass_record const& epr : epi.records)
+  char hostname[256];
+
+  if(!gethostname(hostname, 256))
   {
-    std::cout << "  <record>" << std::endl;
-    std::cout << "    <username>" << epr.username << "</username>" << std::endl;
-    std::cout << "    <uid>"      << epr.uid      << "</uid>"      << std::endl;
-    std::cout << "    <gid>"      << epr.gid      << "</gid>"      << std::endl;
-    std::cout << "    <uid_info>" << epr.uid_info << "</uid_info>" << std::endl;
-    std::cout << "    <home_dir>" << epr.home_dir << "</home_dir>" << std::endl;
-    std::cout << "    <shell>"    << epr.shell    << "</shell>"    << std::endl;
-    std::cout << "  </record>" << std::endl;
+    std::cout
+    << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    << "<?xml-stylesheet type=\"text/xsl\" href=\"etc_pass.xsl\"?>"
+    << "<etc_pass host=\"" << hostname << "\">"
+    ;
+    for(mrr::etc_pass_record const& epr : epi.records)
+    {
+      std::cout
+      << "<record>"
+      << "<username>" << epr.username << "</username>"
+      << "<uid>"      << epr.uid      << "</uid>"
+      << "<gid>"      << epr.gid      << "</gid>"
+      << "<uid_info>" << epr.uid_info << "</uid_info>"
+      << "<home_dir>" << epr.home_dir << "</home_dir>"
+      << "<shell>"    << epr.shell    << "</shell>"
+      << "</record>"
+      ;
+    }
+    std::cout << "</etc_pass>";
   }
-  std::cout << "</etc_pass>" << std::endl;
 
 }
