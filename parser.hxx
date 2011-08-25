@@ -1,5 +1,5 @@
-#ifndef __MRR_ETC_PASSWD_PARSE_HXX__
-#define __MRR_ETC_PASSWD_PARSE_HXX__
+#ifndef MRR_ETC_PASSWD_PARSE_HXX__
+#define MRR_ETC_PASSWD_PARSE_HXX__
 
 // TO FULLY DEBUG COMPILE WITH:
 //   g++ -DBOOST_SPIRIT_DEBUG main.cxx
@@ -18,34 +18,14 @@
 #define START_STATE_RULE_RETTYPE      ::mrr::etc_pass_info
 
 
-
 #define FUSION_MAX_VECTOR_SIZE 20
-
-#include "passwd_utils.hxx"
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/spirit/include/qi.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/spirit/repository/include/qi_flush_multi_pass.hpp>
 
-#include <vector>
-#include <string>
+#include "etc_passwd_adapt.hxx"
 
-BOOST_FUSION_ADAPT_STRUCT(
-  mrr::etc_pass_record,
-  (std::string, username)
-  (std::string, password)
-  (unsigned, uid)
-  (unsigned, gid)
-  (std::string, uid_info)
-  (std::string, home_dir)
-  (std::string, shell)
-)
-
-BOOST_FUSION_ADAPT_STRUCT(
-  mrr::etc_pass_info,
-  (std::vector<mrr::etc_pass_record>, records)
-)
 
 namespace mrr
 {
@@ -108,7 +88,7 @@ namespace mrr
   };
 
   template <typename Iter>
-  inline bool parse_etc_pass(Iter& first, Iter& last, 
+  inline bool parse_etc_pass(Iter& first, Iter& last,
     START_STATE_RULE_RETTYPE& info)
   {
     parser<Iter> p;

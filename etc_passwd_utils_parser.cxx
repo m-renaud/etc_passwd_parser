@@ -1,11 +1,13 @@
 //===========================================================================
 
-#include "parser.hxx"
 #include <istream>
 #include <iterator>
 #include <fstream>
 #include <string>
 #include <boost/spirit/include/support_istream_iterator.hpp>
+
+#include "etc_passwd_utils.hxx"
+#include "parser.hxx"
 
 //===========================================================================
 
@@ -27,7 +29,7 @@ bool passwd_from_stream(
     is.unsetf(std::ios::skipws);
     basic_istream_iterator<char> begin(is);
     basic_istream_iterator<char> end;
-    return parse_etc_pass(begin, end, data); 
+    return parse_etc_pass(begin, end, data);
   }
   else
     return false;

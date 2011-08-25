@@ -4,14 +4,14 @@
 #include <iomanip>
 #include <unistd.h>
 
-#include "passwd_utils.hxx"
+#include "etc_passwd_utils.hxx"
 
 void displayInfo(mrr::etc_pass_info const& epi);
 void displayInfoAsXML(mrr::etc_pass_info const& epi);
 
 //===========================================================================
 
-int main()
+int main(int argc, char *argv[])
 {
   std::ios::sync_with_stdio(false);
 
@@ -21,10 +21,19 @@ int main()
   std::string temp;
 
   etc_pass_info info;
-  bool result = passwd_from_stream("/etc/passwd", info);
+  if(argc != 2)
+  {
+    std::cerr << "Usage: " << argv[0] << " filename" << std::endl;
+    return 1;
+  }
+
+  bool result = passwd_from_stream(argv[1], info);
 
   if (result)
+  {
     displayInfoAsXML(info);
+//    generate_xml(info, std::cout, std::cerr);
+  }
   else
   {
     std::cerr << "PARSE ERROR!" << std::endl;
