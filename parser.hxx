@@ -12,10 +12,10 @@
 //#define START_STATE_RULE_RETTYPE      std::string
 
 //#define START_STATE_RULE_NAME         record
-//#define START_STATE_RULE_RETTYPE      ::mrr::etc_pass_record
+//#define START_STATE_RULE_RETTYPE      ::mrr::etc_passwd_record
 
 #define START_STATE_RULE_NAME         start_state
-#define START_STATE_RULE_RETTYPE      ::mrr::etc_pass_info
+#define START_STATE_RULE_RETTYPE      ::mrr::etc_passwd_info
 
 
 #define FUSION_MAX_VECTOR_SIZE 20
@@ -82,9 +82,9 @@ namespace mrr
     }
 
     qi::rule<Iter, std::string()> string_field, end_of_record;
-    qi::rule<Iter, etc_pass_record()> record;
-    qi::rule<Iter, std::vector<etc_pass_record>()> records;
-    qi::rule<Iter, etc_pass_info()> start_state;
+    qi::rule<Iter, etc_passwd_record()> record;
+    qi::rule<Iter, std::vector<etc_passwd_record>()> records;
+    qi::rule<Iter, etc_passwd_info()> start_state;
   };
 
   template <typename Iter>

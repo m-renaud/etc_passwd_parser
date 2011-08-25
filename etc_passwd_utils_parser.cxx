@@ -17,7 +17,7 @@ namespace mrr {
 
 bool passwd_from_stream(
   std::string const& file_name,
-  etc_pass_info& data
+  etc_passwd_info& data
 )
 {
   using std::ifstream;
@@ -37,7 +37,7 @@ bool passwd_from_stream(
 
 bool passwd_from_stream(
   std::istream& is,
-  etc_pass_info& data
+  etc_passwd_info& data
 )
 {
   // Save the old flags...
@@ -58,7 +58,7 @@ bool passwd_from_stream(
 
 bool passwd_from_container(
   std::string& str,
-  etc_pass_info& data
+  etc_passwd_info& data
 )
 {
   std::string::iterator begin = str.begin();

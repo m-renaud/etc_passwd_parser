@@ -6,8 +6,8 @@
 
 #include "etc_passwd_utils.hxx"
 
-void displayInfo(mrr::etc_pass_info const& epi);
-void displayInfoAsXML(mrr::etc_pass_info const& epi);
+void displayInfo(mrr::etc_passwd_info const& epi);
+void displayInfoAsXML(mrr::etc_passwd_info const& epi);
 
 //===========================================================================
 
@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
   std::string input;
   std::string temp;
 
-  etc_pass_info info;
+  etc_passwd_info info;
   if(argc != 2)
   {
     std::cerr << "Usage: " << argv[0] << " filename" << std::endl;
@@ -44,9 +44,9 @@ int main(int argc, char *argv[])
 }
 
 //===========================================================================
-void displayInfo(mrr::etc_pass_info const& epi)
+void displayInfo(mrr::etc_passwd_info const& epi)
 {
-  for(mrr::etc_pass_record const& epr : epi.records)
+  for(mrr::etc_passwd_record const& epr : epi.records)
   {
     std::cout
       << "Username: " << epr.username << '\n'
@@ -61,7 +61,7 @@ void displayInfo(mrr::etc_pass_info const& epi)
 }
 
 //===========================================================================
-void displayInfoAsXML(mrr::etc_pass_info const& epi)
+void displayInfoAsXML(mrr::etc_passwd_info const& epi)
 {
   char hostname[256];
 
@@ -72,7 +72,7 @@ void displayInfoAsXML(mrr::etc_pass_info const& epi)
     << "<?xml-stylesheet type=\"text/xsl\" href=\"etc_pass.xsl\"?>"
     << "<etc_pass host=\"" << hostname << "\">"
     ;
-    for(mrr::etc_pass_record const& epr : epi.records)
+    for(mrr::etc_passwd_record const& epr : epi.records)
     {
       std::cout
       << "<record>"
