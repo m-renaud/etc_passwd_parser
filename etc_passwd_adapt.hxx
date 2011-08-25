@@ -5,7 +5,7 @@
 #include <string>
 #include <boost/fusion/include/adapt_struct.hpp>
 
-#include "etc_passwd_utils.hxx"
+#include "types.hxx"
 
 BOOST_FUSION_ADAPT_STRUCT(
   mrr::etc_passwd_record,

@@ -44,7 +44,7 @@ namespace mrr
 
 
       records =
-      << lit("<etc_pass>")
+      lit("<etc_pass>")
       << *record
       << lit("</etc_pass")
       ;
