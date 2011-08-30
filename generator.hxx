@@ -11,6 +11,7 @@
 #include <boost/spirit/include/karma.hpp>
 
 #include "etc_passwd_adapt.hxx"
+#include "types.hxx"
 
 
 namespace mrr
@@ -24,43 +25,46 @@ namespace mrr
     {
       using ka::uint_;
       using ka::char_;
+      using ka::string;
       using ka::lit;
+      using ka::omit;
 
+/*
       string_field =
-        *char_
+        string
       ;
+*/
 
       record =
         lit("<record>")
-        << lit("<username>") << string_field << lit("</username>")
-        << lit("<password>") << string_field << lit("</password>")
-        << lit("<uid>")      << uint_        << lit("</uid>")
-        << lit("<gid>")      << uint_        << lit("</gid>")
-        << lit("<uid_info>") << string_field << lit("</uid_info>")
-        << lit("<home_dir>") << string_field << lit("</home_dir>")
-        << lit("<shell>")    << string_field << lit("</shell>")
+        << lit("<username>") << string << lit("</username>")
+        << omit[string]
+        << lit("<uid>")      << uint_  << lit("</uid>")
+        << lit("<gid>")      << uint_  << lit("</gid>")
+        << lit("<uid_info>") << string << lit("</uid_info>")
+        << lit("<home_dir>") << string << lit("</home_dir>")
+        << lit("<shell>")    << string << lit("</shell>")
         << lit("</record>")
       ;
-
 
       records =
       lit("<etc_pass>")
       << *record
-      << lit("</etc_pass")
+      << lit("</etc_pass>")
       ;
 
       start_state = records
       ;
     }
 
-    ka::rule<Iter, std::string()> string_field;
+//    ka::rule<Iter, std::string()> string_field;
     ka::rule<Iter, etc_passwd_record()> record;
     ka::rule<Iter, std::vector<etc_passwd_record>()> records;
     ka::rule<Iter, etc_passwd_info()> start_state;
   };
 
   template <typename Iter>
-  inline bool generate_etc_passwd_xml(Iter& sink, START_STATE_RULE_RETTYPE& info)
+  inline bool generate_etc_passwd_xml(Iter& sink, START_STATE_RULE_RETTYPE const& info)
   {
     generator<Iter> g;
     return ka::generate(sink, g, info);

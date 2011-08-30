@@ -4,7 +4,6 @@
 #include <iterator>
 #include <fstream>
 #include <string>
-#include <boost/spirit/include/support_istream_iterator.hpp>
 
 #include "etc_passwd_utils.hxx"
 #include "generator.hxx"
