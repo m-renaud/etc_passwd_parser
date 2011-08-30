@@ -16,7 +16,8 @@ namespace mrr {
 
   bool generate_xml(etc_passwd_info& info, std::ostream& out, std::ostream& err)
   {
-    return generate_etc_passwd_xml(out, info);
+    std::ostream_iterator<char> begin(out);
+    return generate_etc_passwd_xml(begin, info);
   }
 
 //===========================================================================

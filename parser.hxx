@@ -43,18 +43,26 @@ namespace mrr
       using qi::omit;
       using boost::spirit::repository::flush_multi_pass;
 
+      string_field_char %=
+        char_ -(lit(':') | lit('\n') | lit("\r\n"))
+      ;
+
+      string_field_nonempty %=
+        +string_field_char
+      ;
+
       string_field %=
-        +(char_ -(lit(':') | lit('\n') | lit("\r\n")))
+        *string_field_char
       ;
 
       record %=
-        string_field
-        >> ':' >> string_field
+        string_field_nonempty
+        >> ':' >> string_field_nonempty
         >> ':' >> uint_
         >> ':' >> uint_
         >> ':' >> string_field
-        >> ':' >> string_field
-        >> ':' >> string_field
+        >> ':' >> string_field_nonempty
+        >> ':' >> string_field_nonempty
       ;
 
       end_of_record %=
@@ -81,7 +89,8 @@ namespace mrr
 #undef SRN
     }
 
-    qi::rule<Iter, std::string()> string_field, end_of_record;
+    qi::rule<Iter, char()> string_field_char;
+    qi::rule<Iter, std::string()> string_field, string_field_nonempty, end_of_record;
     qi::rule<Iter, etc_passwd_record()> record;
     qi::rule<Iter, std::vector<etc_passwd_record>()> records;
     qi::rule<Iter, etc_passwd_info()> start_state;
