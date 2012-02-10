@@ -1,5 +1,5 @@
-#ifndef MRR_ETC_PASSWD_GENERATOR_HXX__
-#define MRR_ETC_PASSWD_GENERATOR_HXX__
+#ifndef MRR_ETC_PASSWD_GENERATOR_HXX_
+#define MRR_ETC_PASSWD_GENERATOR_HXX_
 
 #define START_STATE_RULE_NAME         start_state
 #define START_STATE_RULE_RETTYPE      ::mrr::etc_passwd_info
@@ -84,10 +84,10 @@ namespace mrr
       records =
         lit("<etc_pass>")
         << *record
-        << lit("</etc_pass")
+        << lit("</etc_pass>")
       ;
 
-      start_state = 
+      start_state =
         records
       ;
 
@@ -120,4 +120,4 @@ namespace mrr
   }
 
 }
-#endif // #define MRR_ETC_PASSWD_GENERATOR_HXX__
+#endif // #define MRR_ETC_PASSWD_GENERATOR_HXX_
